@@ -20,8 +20,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.CallMade
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.CallMade
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -155,7 +155,7 @@ fun FinancialMetricCard(
                     )
                 }
                 Icon(
-                    imageVector = if (useChevronArrow) Icons.AutoMirrored.Filled.KeyboardArrowRight else Icons.Default.CallMade,
+                    imageVector = if (useChevronArrow) Icons.AutoMirrored.Filled.KeyboardArrowRight else Icons.AutoMirrored.Filled.CallMade,
                     contentDescription = null,
                     tint = secondaryGlow,
                     modifier = Modifier.size(18.dp)

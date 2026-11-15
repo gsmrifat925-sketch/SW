@@ -62,11 +62,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import android.app.Application
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -113,14 +116,25 @@ private data class NavTabItem(
 
 @Composable
 fun ShockwaveApp(viewModel: ShockwaveViewModel) {
+    val app = LocalContext.current.applicationContext as Application
+    val homeDashboardViewModel: HomeDashboardViewModel = viewModel(
+        factory = HomeDashboardViewModel.factory(app)
+    )
+
     val preferences by viewModel.preferences.collectAsStateWithLifecycle()
     val isPinUnlocked by viewModel.isPinUnlocked.collectAsStateWithLifecycle()
     val allTournaments by viewModel.allTournaments.collectAsStateWithLifecycle()
-    val dashboardDateFilter by viewModel.dashboardDateFilter.collectAsStateWithLifecycle()
-    val chartDateFilter by viewModel.chartDateFilter.collectAsStateWithLifecycle()
-    val dashboardSummary by viewModel.dashboardSummary.collectAsStateWithLifecycle()
-    val chartPoints by viewModel.chartPoints.collectAsStateWithLifecycle()
-    val alerts by viewModel.commandAlerts.collectAsStateWithLifecycle()
+    val dashboardDateFilter by homeDashboardViewModel.selectedDateFilter.collectAsStateWithLifecycle()
+    val chartDateFilter by homeDashboardViewModel.chartDateFilter.collectAsStateWithLifecycle()
+    val totalInvestment by homeDashboardViewModel.totalInvestment.collectAsStateWithLifecycle()
+    val totalWinnings by homeDashboardViewModel.totalWinnings.collectAsStateWithLifecycle()
+    val totalProfit by homeDashboardViewModel.totalProfit.collectAsStateWithLifecycle()
+    val totalLoss by homeDashboardViewModel.totalLoss.collectAsStateWithLifecycle()
+    val totalMatches by homeDashboardViewModel.totalMatches.collectAsStateWithLifecycle()
+    val winningMatches by homeDashboardViewModel.winningMatches.collectAsStateWithLifecycle()
+    val losingMatches by homeDashboardViewModel.losingMatches.collectAsStateWithLifecycle()
+    val chartPoints by homeDashboardViewModel.chartPoints.collectAsStateWithLifecycle()
+    val alerts by homeDashboardViewModel.commandAlerts.collectAsStateWithLifecycle()
     val historyFilter by viewModel.historyFilter.collectAsStateWithLifecycle()
     val filteredHistory by viewModel.filteredHistory.collectAsStateWithLifecycle()
     val selectedReportPeriod by viewModel.selectedReportPeriod.collectAsStateWithLifecycle()
@@ -336,14 +350,20 @@ fun ShockwaveApp(viewModel: ShockwaveViewModel) {
                                 composable<ShockwaveRoute.Home> {
                                     HomeDashboardScreen(
                                         preferences = preferences,
-                                        summary = dashboardSummary,
+                                        totalInvestment = totalInvestment,
+                                        totalWinnings = totalWinnings,
+                                        totalProfit = totalProfit,
+                                        totalLoss = totalLoss,
+                                        totalMatches = totalMatches,
+                                        winningMatches = winningMatches,
+                                        losingMatches = losingMatches,
                                         totalTournamentCount = allTournaments.size,
                                         selectedDateFilter = dashboardDateFilter,
                                         chartDateFilter = chartDateFilter,
                                         chartPoints = chartPoints,
                                         alerts = alerts,
-                                        onSelectDateFilter = viewModel::setDashboardDateFilter,
-                                        onSelectChartFilter = viewModel::setChartDateFilter,
+                                        onSelectDateFilter = homeDashboardViewModel::setDateFilter,
+                                        onSelectChartFilter = homeDashboardViewModel::setChartDateFilter,
                                         onAddTournamentClick = {
                                             navController.navigate(ShockwaveRoute.AddEditTournament(0L))
                                         },
@@ -351,8 +371,8 @@ fun ShockwaveApp(viewModel: ShockwaveViewModel) {
                                         onOpenReportsClick = { navigateTab(ShockwaveRoute.Reports) },
                                         onOpenHistoryClick = { navigateTab(ShockwaveRoute.History) },
                                         onOpenSettingsClick = { navigateTab(ShockwaveRoute.Settings) },
-                                        onDismissAlert = viewModel::dismissAlert,
-                                        onClearAllAlerts = viewModel::clearAllAlerts,
+                                        onDismissAlert = homeDashboardViewModel::dismissAlert,
+                                        onClearAllAlerts = homeDashboardViewModel::clearAllAlerts,
                                         onLoadSampleData = viewModel::loadSampleData
                                     )
                                 }

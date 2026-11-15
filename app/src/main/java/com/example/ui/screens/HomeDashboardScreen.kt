@@ -72,7 +72,6 @@ import com.example.data.model.DateFilter
 import com.example.data.preferences.UserPreferences
 import com.example.data.repository.ChartPoint
 import com.example.data.repository.CommandAlert
-import com.example.data.repository.DashboardSummary
 import com.example.i18n.LocalStrings
 import com.example.ui.components.FinancialMetricCard
 import com.example.ui.components.NeonFilterPill
@@ -105,7 +104,13 @@ import com.example.ui.theme.TextSecondary
 @Composable
 fun HomeDashboardScreen(
     preferences: UserPreferences,
-    summary: DashboardSummary,
+    totalInvestment: Double,
+    totalWinnings: Double,
+    totalProfit: Double,
+    totalLoss: Double,
+    totalMatches: Int,
+    winningMatches: Int,
+    losingMatches: Int,
     totalTournamentCount: Int,
     selectedDateFilter: DateFilter,
     chartDateFilter: DateFilter,
@@ -389,7 +394,7 @@ fun HomeDashboardScreen(
                     ) {
                         FinancialMetricCard(
                             title = strings.totalInvestment,
-                            amount = summary.totalInvestment,
+                            amount = totalInvestment,
                             icon = Icons.Default.AccountBalanceWallet,
                             accentColor = BrightViolet,
                             secondaryGlow = BrightViolet,
@@ -400,7 +405,7 @@ fun HomeDashboardScreen(
                         )
                         FinancialMetricCard(
                             title = strings.totalWinning,
-                            amount = summary.totalWinning,
+                            amount = totalWinnings,
                             icon = Icons.Default.EmojiEvents,
                             accentColor = TealGreen,
                             secondaryGlow = NeonGreen,
@@ -416,7 +421,7 @@ fun HomeDashboardScreen(
                     ) {
                         FinancialMetricCard(
                             title = strings.totalProfit,
-                            amount = summary.totalProfit,
+                            amount = totalProfit,
                             icon = Icons.AutoMirrored.Filled.TrendingUp,
                             accentColor = NeonGreen,
                             secondaryGlow = ElectricBlue,
@@ -427,7 +432,7 @@ fun HomeDashboardScreen(
                         )
                         FinancialMetricCard(
                             title = strings.totalLoss,
-                            amount = summary.totalLoss,
+                            amount = totalLoss,
                             icon = Icons.Default.HeartBroken,
                             accentColor = NeonRed,
                             secondaryGlow = NeonRed.copy(alpha = 0.9f),
@@ -453,7 +458,7 @@ fun HomeDashboardScreen(
                     MatchCounterCard(
                         icon = Icons.Default.EmojiEvents,
                         iconTint = GoldCrown,
-                        value = summary.totalMatches.toString(),
+                        value = totalMatches.toString(),
                         label = strings.totalMatches,
                         testTag = "stat_total_matches",
                         onClick = onOpenHistoryClick,
@@ -462,7 +467,7 @@ fun HomeDashboardScreen(
                     MatchCounterCard(
                         icon = Icons.Default.WorkspacePremium,
                         iconTint = GoldCrown,
-                        value = summary.winningMatches.toString(),
+                        value = winningMatches.toString(),
                         label = strings.winningMatches,
                         testTag = "stat_winning_matches",
                         onClick = onOpenHistoryClick,
@@ -471,7 +476,7 @@ fun HomeDashboardScreen(
                     MatchCounterCard(
                         icon = Icons.Default.GpsFixed,
                         iconTint = ElectricBlue,
-                        value = summary.losingMatches.toString(),
+                        value = losingMatches.toString(),
                         label = strings.losingMatches,
                         testTag = "stat_losing_matches",
                         onClick = onOpenHistoryClick,
