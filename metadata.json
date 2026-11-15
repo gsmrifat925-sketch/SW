@@ -1,0 +1,6 @@
+{
+  "name": "SHOCKWAVE",
+  "description": "SHOCKWAVE — Futuristic Free Fire Team Financial & Tournament Tracker",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
